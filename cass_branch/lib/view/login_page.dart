@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cass_branch/model/branch.dart';
+import 'package:cass_branch/utils/const.dart';
+import 'package:cass_branch/view/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,12 +15,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+  String _email;
+  String _password;
   bool _isLoading = false;
 
-  _onSubmit() {
-    final currentState = _formKey.currentState!;
+  void _onSubmit() {
+    final currentState = _formKey.currentState;
     if (currentState.validate()) {
       currentState.save();
       setState(() {
@@ -26,46 +30,84 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _login() async {
-    var uri = Uri.http('user:pass@localhost:8080', 'api/customer');
-    var response = await http.get(uri);
-    if (response.statusCode == 200) {
-      print(response.body);
-    } else {
-      print('error');
-    }
+  Future<void> _login() async {
+    await http
+        .post(Uri.http(AUTHORITY, 'api/branch/login'),
+            headers: HEADERS,
+            body: Branch.createJson(email: _email, password: _password))
+        .then((response) {
+      var resBody = jsonDecode(response.body);
+      String message = resBody[MESSAGE];
+      if (response.statusCode == 200) {
+        Branch branch = Branch.fromJson(resBody[DATA]);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext context) => MainPage(branch),
+            ),
+            (Route<dynamic> route) => false);
+      } else {
+        _showDialog(message);
+      }
+    }, onError: (error) => _showDialog('Server connection error'));
+  }
+
+  Future<void> _showDialog(String message) async {
+    setState(() {
+      _isLoading = false;
+    });
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _backgroud(),
-          Center(
-            child: Material(
-              elevation: 25,
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.65,
-                height: MediaQuery.of(context).size.height * 0.80,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      _header(),
-                      _textFieldEmail(),
-                      _textFieldPassword(),
-                      _buttonLogin(),
-                    ],
+      body: ModalProgressHUD(
+        inAsyncCall: _isLoading,
+        child: Stack(
+          children: <Widget>[
+            _backgroud(),
+            Center(
+              child: Material(
+                elevation: 25,
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.80,
+                  child: Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _header(),
+                          _textFieldEmail(),
+                          _textFieldPassword(),
+                          _buttonLogin(),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -144,16 +186,10 @@ class _LoginPageState extends State<LoginPage> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: 'Email',
-        errorText: null,
         suffixIcon: Icon(Icons.email),
       ),
-      onSaved: (email) => _email = email!,
-      validator: (email) {
-        if (email!.isEmpty) {
-          return 'Email cannot be empty';
-        }
-        return null;
-      },
+      onSaved: (email) => _email = email,
+      validator: (email) => email.isEmpty ? 'Email cannot be empty' : null,
     );
   }
 
@@ -166,10 +202,10 @@ class _LoginPageState extends State<LoginPage> {
         labelText: 'Password',
         suffixIcon: Icon(Icons.lock),
       ),
-      onSaved: (password) => _password = password!,
+      onSaved: (password) => _password = password,
       onFieldSubmitted: (_) => _onSubmit(),
       validator: (password) {
-        if (password!.isEmpty) {
+        if (password.isEmpty) {
           return 'Password cannot be empty';
         } else if (password.length < 8) {
           return 'Password cannot be less than 8 charaters';
