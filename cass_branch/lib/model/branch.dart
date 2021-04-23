@@ -5,6 +5,7 @@ class Branch {
   String name;
   String email;
   String location;
+  static Branch _instance;
 
   Branch({this.id, this.name, this.email, this.location});
 
@@ -26,4 +27,8 @@ class Branch {
       'location': location,
     }..removeWhere((key, value) => value == null));
   }
+
+  static Branch getInstance() => _instance;
+
+  static void setInstance(Branch branch) => _instance = branch;
 }

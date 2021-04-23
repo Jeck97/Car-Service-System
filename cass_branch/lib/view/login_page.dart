@@ -39,10 +39,10 @@ class _LoginPageState extends State<LoginPage> {
       var resBody = jsonDecode(response.body);
       String message = resBody[MESSAGE];
       if (response.statusCode == 200) {
-        Branch branch = Branch.fromJson(resBody[DATA]);
+        Branch.setInstance(Branch.fromJson(resBody[DATA]));
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (BuildContext context) => MainPage(branch),
+              builder: (BuildContext context) => MainPage(),
             ),
             (Route<dynamic> route) => false);
       } else {

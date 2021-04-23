@@ -1,16 +1,39 @@
-import 'package:cass_branch/model/branch.dart';
-import 'package:cass_branch/utils/const.dart';
 import 'package:cass_branch/view/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-final List<Widget> panels =
-    List.filled(NAV_ICONS.length, null, growable: false);
+import 'panel/booking_panel.dart';
+import 'panel/customer_panel.dart';
+import 'panel/dashboard_panel.dart';
+import 'panel/payment_panel.dart';
+import 'panel/report_panel.dart';
+import 'panel/service_panel.dart';
+import 'panel/setting_panel.dart';
 
-class MainPage extends StatelessWidget {
-  final Branch branch;
+final List<Widget> panels = [];
+int currentIndex;
 
-  MainPage(this.branch);
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  void updateIndex(int index) => setState(() => currentIndex = index);
+
+  @override
+  void initState() {
+    currentIndex = 0;
+    panels
+      ..add(DashboardPanel())
+      ..add(BookingPanel())
+      ..add(ServicePanel())
+      ..add(CustomerPanel())
+      ..add(PaymentPanel())
+      ..add(ReportPanel())
+      ..add(SettingPanel());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,37 +43,14 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           body: Row(
             children: <Widget>[
-              NavigationBar(isCollapsed),
-              DashboardPage(branch),
+              NavigationBar(isCollapsed, currentIndex, updateIndex),
+              Expanded(
+                child: IndexedStack(index: currentIndex, children: panels),
+              ),
             ],
           ),
         );
       },
-    );
-  }
-}
-
-class DashboardPage extends StatelessWidget {
-  final Branch branch;
-  DashboardPage(this.branch);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Dashboard'),
-          backgroundColor: Colors.purple,
-        ),
-        body: Column(
-          children: <Widget>[
-            Text('${branch.id}'),
-            Text(branch.name),
-            Text(branch.email),
-            Text(branch.location),
-          ],
-        ),
-      ),
     );
   }
 }

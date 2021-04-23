@@ -27,3 +27,11 @@ const List<String> NAV_TITLES = [
   'Report',
   'Setting',
 ];
+
+const int DASHBOARD = 0;
+const int BOOKING = 1;
+const int SERVICE = 2;
+const int CUSTOMER = 3;
+const int PAYMENT = 4;
+const int REPORT = 5;
+const int SETTING = 6;

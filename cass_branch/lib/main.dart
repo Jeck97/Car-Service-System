@@ -10,19 +10,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DesktopWindow.setMinWindowSize(Size(1000, 750));
+    Branch.setInstance(Branch(
+      id: 2,
+      email: 'haha',
+      name: 'CaSS Bayan Lepas',
+      location: '11900 Bayan Lepas, Penang',
+    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo),
       title: 'CaSS-Branch Desktop App',
       // home: LoginPage(),
-      home: MainPage(
-        Branch(
-          id: 2,
-          email: 'haha',
-          name: 'CaSS Bayan Lepas',
-          location: '11900 Bayan Lepas, Penang',
-        ),
-      ),
+      home: MainPage(),
     );
   }
 }
