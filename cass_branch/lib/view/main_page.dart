@@ -1,14 +1,14 @@
-import 'package:cass_branch/view/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import 'panel/booking_panel.dart';
-import 'panel/customer_panel.dart';
-import 'panel/dashboard_panel.dart';
-import 'panel/payment_panel.dart';
-import 'panel/report_panel.dart';
-import 'panel/service_panel.dart';
-import 'panel/setting_panel.dart';
+import 'booking_panel.dart';
+import 'customer_panel.dart';
+import 'dashboard_panel.dart';
+import 'navigation_bar.dart';
+import 'payment_panel.dart';
+import 'report_panel.dart';
+import 'service_panel.dart';
+import 'setting_panel.dart';
 
 final List<Widget> panels = [];
 int currentIndex;

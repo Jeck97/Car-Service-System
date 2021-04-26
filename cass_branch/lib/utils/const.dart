@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const String AUTHORITY = 'user:pass@localhost:8080';
 const String MESSAGE = 'message';
 const String DATA = 'data';
+const String SERVER_ERROR = 'Server connection error';
 
 const Map<String, String> HEADERS = {
   'Content-Type': 'application/json; charset=UTF-8',

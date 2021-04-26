@@ -23,38 +23,30 @@ class _LoginPageState extends State<LoginPage> {
     final currentState = _formKey.currentState;
     if (currentState.validate()) {
       currentState.save();
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
       _login();
     }
   }
 
-  Future<void> _login() async {
-    await http
-        .post(Uri.http(AUTHORITY, 'api/branch/login'),
-            headers: HEADERS,
-            body: Branch.createJson(email: _email, password: _password))
-        .then((response) {
-      var resBody = jsonDecode(response.body);
-      String message = resBody[MESSAGE];
-      if (response.statusCode == 200) {
-        Branch.setInstance(Branch.fromJson(resBody[DATA]));
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (BuildContext context) => MainPage(),
-            ),
-            (Route<dynamic> route) => false);
-      } else {
-        _showDialog(message);
-      }
-    }, onError: (error) => _showDialog('Server connection error'));
-  }
+  Future<void> _login() async => await http
+          .post(Uri.http(AUTHORITY, 'api/branches/login'),
+              headers: HEADERS,
+              body: Branch.createJson(email: _email, password: _password))
+          .then((response) {
+        var resBody = jsonDecode(response.body);
+        String message = resBody[MESSAGE];
+        if (response.statusCode == 200) {
+          Branch.setInstance(Branch.fromJson(resBody[DATA]));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => MainPage()),
+              (Route<dynamic> route) => false);
+        } else {
+          _showDialog(message);
+        }
+      }, onError: (error) => _showDialog(SERVER_ERROR));
 
   Future<void> _showDialog(String message) async {
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() => _isLoading = false);
     showDialog(
       context: context,
       barrierDismissible: true,
