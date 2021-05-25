@@ -1,46 +1,37 @@
-import 'dart:convert';
-
 class Customer {
   int id;
   String name;
   String phoneNo;
   String email;
-  bool isAppUser;
-  DateTime dateCreated;
+  String type;
+  String datetimeRegistered;
 
-  Customer(
-      {this.id,
-      this.name,
-      this.phoneNo,
-      this.email,
-      this.isAppUser,
-      this.dateCreated});
+  Customer({
+    this.id,
+    this.name,
+    this.phoneNo,
+    this.email,
+    this.type,
+    this.datetimeRegistered,
+  });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       id: json['customer_id'],
-      name: json['name'],
-      phoneNo: json['phone_no'],
-      email: json['email'] != null ? json['email'] : null,
-      isAppUser: json['is_app_user'],
-      dateCreated: DateTime.parse(json['date_created']),
+      name: json['customer_name'],
+      phoneNo: json['customer_phone_number'],
+      email: json['customer_email'],
+      type: json['customer_type'],
+      datetimeRegistered: json['customer_datetime_registered'],
     );
   }
 
-  static String createJson(
-      {int id,
-      String phoneNo,
-      String email,
-      String password,
-      bool isAppUser,
-      DateTime dateCreated}) {
-    return jsonEncode(<String, dynamic>{
-      'customer_id': id,
-      'phone_no': phoneNo,
-      'email': email,
-      'password': password,
-      'is_app_user': isAppUser,
-      'date_created': dateCreated
-    }..removeWhere((key, value) => value == null));
-  }
+  Map toJson() => {
+        'customer_id': id,
+        'customer_name': name,
+        'customer_phone_number': phoneNo,
+        'customer_email': email,
+        'customer_type': type,
+        'customer_datetime_registered': datetimeRegistered,
+      };
 }

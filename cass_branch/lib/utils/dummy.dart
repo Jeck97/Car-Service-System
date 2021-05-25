@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:cass_branch/utils/const.dart';
+import 'package:cass_branch/model/response.dart';
+import 'package:cass_branch/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class Dummy {
   static void generateCustomers(int qty, Function callback) async {
     StringBuffer resultBuffer = StringBuffer();
     Random random = Random();
-    DateTime now = DateTime.now();
 
     for (int i = 0; i < qty; i++) {
       bool isAppUser = random.nextBool();
@@ -19,16 +19,17 @@ class Dummy {
         'email': isAppUser ? 'mail${i}_$rdmNum@random.com' : null,
         'password': isAppUser ? 'random123' : null,
         'is_app_user': isAppUser,
-        'date_created': DateTime(now.year, now.month, now.day + i).toString(),
+        'date_created': DateTime.now().toString(),
       };
 
       await http
           .post(Uri.http(AUTHORITY, 'api/customers'),
               headers: HEADERS, body: jsonEncode(customer))
           .then(
-              (response) =>
-                  resultBuffer.writeln(jsonDecode(response.body)[MESSAGE]),
-              onError: (error) => resultBuffer.writeln(SERVER_ERROR));
+              (response) => resultBuffer
+                  .writeln(jsonDecode(response.body)[Response.MESSAGE]),
+              onError: (error) =>
+                  resultBuffer.writeln('Server connection error'));
     }
 
     callback(resultBuffer.toString());

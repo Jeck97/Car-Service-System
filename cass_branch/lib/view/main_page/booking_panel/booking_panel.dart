@@ -1,4 +1,3 @@
-import 'package:cass_branch/utils/const.dart';
 import 'package:flutter/material.dart';
 
 class BookingPanel extends StatefulWidget {
@@ -10,7 +9,7 @@ class _BookingPanelState extends State<BookingPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(NAV_TITLES[BOOKING])),
+      appBar: AppBar(title: Text('Booking')),
       body: TextField(),
     );
   }
