@@ -5,7 +5,7 @@ const { compareSync } = require("bcrypt");
 module.exports = {
   login: (req, res) => {
     const data = req.body;
-    service.selectBranchByEmail(data.email, (error, result) => {
+    service.selectBranch(data.email, (error, result) => {
       // Database got some problem
       if (error) {
         console.log(error);
@@ -21,7 +21,7 @@ module.exports = {
           data: null,
         });
       }
-      const isMatched = compareSync(data.password, result.password);
+      const isMatched = compareSync(data.password, result.branch_password);
       // If the password not matched with the corresponding email
       if (!isMatched) {
         return res.status(401).json({
@@ -30,7 +30,7 @@ module.exports = {
         });
       }
       // Email found and the corresponding password matched
-      result.password = undefined;
+      result.branch_password = undefined;
       return res.status(200).json({
         message: LOGIN_SUCCESS,
         data: result,

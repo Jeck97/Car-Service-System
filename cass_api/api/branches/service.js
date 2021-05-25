@@ -1,9 +1,9 @@
 const pool = require("../../config/database");
 
 module.exports = {
-  selectBranchByEmail: (email, callback) => {
+  selectBranch: (email, callback) => {
     pool.query(
-      "SELECT * FROM branch WHERE email = ?",
+      "SELECT * FROM branch WHERE branch_email = ?",
       [email],
       (error, results) => (error ? callback(error) : callback(null, results[0]))
     );

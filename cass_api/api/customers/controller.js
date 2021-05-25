@@ -4,11 +4,13 @@ const { genSaltSync, hashSync } = require("bcrypt");
 
 module.exports = {
   create: (req, res) => {
-    var { password } = req.body;
-    if (password != null) password = hashSync(password, genSaltSync(10));
-    service.insertCustomer(res.body, (error) => {
+    var { name, password } = req.body;
+    if (password != null)
+      req.body.password = hashSync(password, genSaltSync(10));
+    service.insertCustomer(req.body, (error) => {
       if (error) {
         // Database got some problem
+        console.log(error);
         if (error.errno == ECONNREFUSED) {
           return res.status(500).json({
             message: DB_CONN_ERR,
@@ -26,13 +28,13 @@ module.exports = {
       }
       // Customer created successful
       return res.status(200).json({
-        message: `Customer ${data.name} created successful`,
+        message: `Customer ${name} created successful`,
         data: null,
       });
     });
   },
   readAll: (req, res) => {
-    service.selectAllCustomers((error, results) => {
+    service.selectCustomers(req.query.search, (error, results) => {
       // Database got some problem
       if (error) {
         console.log(error);
@@ -42,9 +44,6 @@ module.exports = {
         });
       }
       // Customers retrieved successful
-      results.forEach(
-        (result) => (result.is_app_user = result.is_app_user == 1)
-      );
       return res.status(200).json({
         message: `${results.length} ${
           results.length > 1 ? "results" : "result"
