@@ -3,19 +3,18 @@ import 'dart:convert';
 import 'package:cass_branch/model/car.dart';
 import 'package:cass_branch/model/car_brand.dart';
 import 'package:cass_branch/model/car_model.dart';
+import 'package:cass_branch/model/customer.dart';
 import 'package:cass_branch/model/response.dart';
 import 'package:cass_branch/utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CarAPI {
   static final String _unencodedPath = 'cass/api/cars';
 
-  static Future<Response<List<Car>>> fetchByCustomerId(
-      {@required int customerId}) async {
+  static Future<Response<List<Car>>> fetchByCustomer(Customer customer) async {
     try {
       final response = await http.get(
-        Uri.http(AUTHORITY, _unencodedPath, {'customer_id': '$customerId'}),
+        Uri.http(AUTHORITY, _unencodedPath, {'customer': '${customer.id}'}),
         headers: HEADERS,
       );
       final responseBody = jsonDecode(response.body);
@@ -72,7 +71,7 @@ class CarAPI {
     }
   }
 
-  static Future<Response<Null>> add({@required Car car}) async {
+  static Future<Response<int>> add(Car car) async {
     try {
       final response = await http.post(
         Uri.http(AUTHORITY, _unencodedPath),
@@ -82,6 +81,7 @@ class CarAPI {
       final responseBody = jsonDecode(response.body);
       return Response(
         isSuccess: response.statusCode == 200,
+        data: responseBody[Response.DATA],
         message: responseBody[Response.MESSAGE],
       );
     } catch (error) {

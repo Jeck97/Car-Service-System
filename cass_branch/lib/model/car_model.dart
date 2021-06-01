@@ -1,7 +1,10 @@
 import 'package:cass_branch/model/car_brand.dart';
 
 class CarModel {
-  static const _Type types = _Type();
+  static const _Type TYPE = _Type();
+  static const String ID = 'car_model_id';
+  static const String _NAME = 'car_model_name';
+  static const String _TYPE = 'car_model_type';
 
   int id;
   String name;
@@ -17,18 +20,18 @@ class CarModel {
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
     return CarModel(
-      id: json['car_model_id'],
-      name: json['car_model_name'],
-      type: json['car_model_type'],
+      id: json[ID],
+      name: json[_NAME],
+      type: json[_TYPE],
       carBrand: CarBrand.fromJson(json),
     );
   }
 
   Map toJson() => {
-        'car_model_id': id,
-        'car_model_name': name,
-        'car_model_type': type,
-        'car_brand_id': carBrand.id,
+        ID: id,
+        _NAME: name,
+        _TYPE: type,
+        CarBrand.ID: carBrand.id,
       };
 }
 

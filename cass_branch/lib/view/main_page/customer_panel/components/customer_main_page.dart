@@ -1,7 +1,6 @@
 import 'package:cass_branch/api/customer_api.dart';
 import 'package:cass_branch/model/customer.dart';
 import 'package:cass_branch/utils/dialog_utils.dart';
-import 'package:cass_branch/utils/dummy.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -24,7 +23,7 @@ class _CustomerMainPageState extends State<CustomerMainPage> {
   void _fetchCustomers() async {
     setState(() => _isLoading = true);
     final response =
-        await CustomerAPI.fetchAll(search: _searchController.text.trim());
+        await CustomerAPI.fetch(search: _searchController.text.trim());
     setState(() {
       if (response.isSuccess) {
         _customers = response.data;
@@ -54,18 +53,12 @@ class _CustomerMainPageState extends State<CustomerMainPage> {
       inAsyncCall: _isLoading,
       child: Scaffold(
         appBar: AppBar(
-          title: GestureDetector(
-            child: Text(
-              'Customer',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  .copyWith(color: Colors.white),
-            ),
-            onTap: () => Dummy.generateCustomers(
-              12,
-              (message) => DialogUtils.show(context, message),
-            ),
+          title: Text(
+            'Customer',
+            style: Theme.of(context)
+                .textTheme
+                .headline5
+                .copyWith(color: Colors.white),
           ),
         ),
         body: Container(

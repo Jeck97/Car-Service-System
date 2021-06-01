@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
-class BookingPanel extends StatefulWidget {
-  @override
-  _BookingPanelState createState() => _BookingPanelState();
-}
+import 'components/booking_main_page.dart';
 
-class _BookingPanelState extends State<BookingPanel> {
+class BookingPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Booking')),
-      body: TextField(),
+    return Navigator(
+      initialRoute: BookingMainPage.ROUTE,
+      onGenerateRoute: (settings) {
+        WidgetBuilder builder;
+        switch (settings.name) {
+          case BookingMainPage.ROUTE:
+            builder = (_) => BookingMainPage();
+            break;
+          default:
+            throw Exception('Invalid route: ${settings.name}');
+        }
+        return MaterialPageRoute(builder: builder, settings: settings);
+      },
     );
   }
 }

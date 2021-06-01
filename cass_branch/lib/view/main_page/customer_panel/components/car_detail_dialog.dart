@@ -12,7 +12,7 @@ class CarDetailDialog extends StatelessWidget {
       contentPadding: PADDING32,
       actionsPadding: PADDING24,
       title: DialogTitle('Car Detail'),
-      content: _CarDetailDialog(_car),
+      content: _CarDetailContent(_car),
       actions: [
         DialogAction(
           label: 'OK',
@@ -23,9 +23,9 @@ class CarDetailDialog extends StatelessWidget {
   }
 }
 
-class _CarDetailDialog extends StatelessWidget {
+class _CarDetailContent extends StatelessWidget {
   final Car _car;
-  _CarDetailDialog(this._car);
+  _CarDetailContent(this._car);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,11 +41,14 @@ class _CarDetailDialog extends StatelessWidget {
             _labelText(label: 'Body Type', value: _car.carModel.type),
             _labelText(
               label: 'Last Serviced Date',
-              value: _car.dateFromService != null ? _car.dateFromService : '-',
+              value: _car.dateFromService != null
+                  ? _car.dateFromServiceString
+                  : '-',
             ),
             _labelText(
               label: 'Coming Service Date',
-              value: _car.dateToService != null ? _car.dateToService : '-',
+              value:
+                  _car.dateToService != null ? _car.dateToServiceString : '-',
             ),
             if (_car.distanceTargeted != null && _car.distanceTargeted != 0)
               _labelText(

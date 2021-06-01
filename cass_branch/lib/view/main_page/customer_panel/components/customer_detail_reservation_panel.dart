@@ -39,8 +39,7 @@ class _CustomerDetailReservationPanelState
   void _fetchCars() async {
     setState(() => _isLoading = true);
     _cars = [_allCar];
-    final response =
-        await CarAPI.fetchByCustomerId(customerId: widget._customer.id);
+    final response = await CarAPI.fetchByCustomer(widget._customer);
     setState(() {
       response.isSuccess
           ? _cars.addAll(response.data)
@@ -51,8 +50,10 @@ class _CustomerDetailReservationPanelState
 
   void _fetchReservations() async {
     setState(() => _isLoading = true);
-    final response =
-        await ReservationAPI.fetchByCustomerId(customerId: widget._customer.id);
+    final response = await ReservationAPI.fetch(
+      id: widget._customer.id,
+      type: ReservationAPI.TYPE_CUSTOMER,
+    );
     setState(() {
       response.isSuccess
           ? _reservations = response.data
@@ -170,10 +171,10 @@ class _CustomerReservationHeader extends StatelessWidget {
 
   final List<String> _statuses = [
     'All Status',
-    Reservation.statuses.reserved,
-    Reservation.statuses.servicing,
-    Reservation.statuses.serviced,
-    Reservation.statuses.cancelled,
+    Reservation.STATUS.reserved,
+    Reservation.STATUS.servicing,
+    Reservation.STATUS.serviced,
+    Reservation.STATUS.cancelled,
   ];
 
   _CustomerReservationHeader({
@@ -313,8 +314,8 @@ class _CustomerReservationTable extends StatelessWidget {
       return DataRow(
         cells: <DataCell>[
           DataCell(Text('${reservation.id}')),
-          DataCell(Text(reservation.datetimeReserved)),
-          DataCell(Text(reservation.datetimeToService)),
+          DataCell(Text(reservation.dateTimeReservedString)),
+          DataCell(Text(reservation.dateTimeToServiceString)),
           DataCell(Text(reservation.status)),
           DataCell(
             ConstrainedBox(

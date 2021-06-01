@@ -97,15 +97,15 @@ class _CustomerTableHeaderState extends State<_CustomerTableHeader> {
 
   @override
   void initState() {
-    _focusNode.addListener(
-      () => setState(() => _hasFocus = _focusNode.hasFocus),
-    );
+    _focusNode
+        .addListener(() => setState(() => _hasFocus = _focusNode.hasFocus));
     super.initState();
   }
 
   @override
   void dispose() {
     _focusNode.removeListener(() {});
+    widget.controller.dispose();
     super.dispose();
   }
 

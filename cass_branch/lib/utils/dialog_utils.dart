@@ -18,6 +18,28 @@ class DialogUtils {
       },
     );
   }
+
+  static Future<bool> confirm(BuildContext context, String message) async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext _context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(_context).pop(false),
+              child: Text('NO'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(_context).pop(true),
+              child: Text('YES'),
+            ),
+          ],
+        );
+      },
+    ).then((value) => value).onError((error, stackTrace) => false);
+  }
 }
 
 class DialogTitle extends StatelessWidget {

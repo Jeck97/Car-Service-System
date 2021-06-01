@@ -26,7 +26,7 @@ class CustomerDataTableSource extends DataTableSource {
               ? Icon(Icons.check, color: Colors.green)
               : Icon(Icons.close, color: Colors.red),
         ),
-        DataCell(Text(customer.datetimeRegistered)),
+        DataCell(Text(customer.datetimeRegisteredString)),
       ],
     );
   }

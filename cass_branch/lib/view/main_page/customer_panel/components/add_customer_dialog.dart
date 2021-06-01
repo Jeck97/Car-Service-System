@@ -25,14 +25,14 @@ class _AddCustomerDialogState extends State<AddCustomerDialog> {
     currentState.save();
     setState(() => _isLoading = true);
     final response = await CustomerAPI.add(
-      customer: Customer(
+      Customer(
         name: _nameController.text.trim(),
         phoneNo: _phoneNoController.text.trim(),
         email: _emailController.text.isNotEmpty
             ? _emailController.text.trim()
             : null,
-        type: 'normal user',
-        datetimeRegistered: DateTime.now().toString(),
+        type: Customer.TYPE.normalUser,
+        datetimeRegistered: DateTime.now(),
       ),
     );
     if (response.isSuccess) _onDismiss();

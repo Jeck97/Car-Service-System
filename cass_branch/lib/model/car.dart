@@ -1,13 +1,22 @@
+import 'package:cass_branch/utils/date_utils.dart';
+
 import 'car_model.dart';
 import 'customer.dart';
 
 class Car {
+  static const String ID = 'car_id';
+  static const String _PLATE_NO = 'car_plate_number';
+  static const String _DATE_TO_SERVICE = 'car_date_to_service';
+  static const String _DATE_FROM_SERVICE = 'car_date_from_service';
+  static const String _DISTANCE_TARGETED = 'car_distance_targeted';
+  static const String _DISTANCE_COMPLETED = 'car_distance_completed';
+
   int id;
   String plateNo;
   CarModel carModel;
   Customer customer;
-  String dateToService;
-  String dateFromService;
+  DateTime dateToService;
+  DateTime dateFromService;
   int distanceTargeted;
   int distanceCompleted;
 
@@ -22,27 +31,30 @@ class Car {
     this.distanceCompleted,
   });
 
+  String get dateToServiceString => DateUtils.fromDate(dateFromService);
+  String get dateFromServiceString => DateUtils.fromDate(dateFromService);
+
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
-      id: json['car_id'],
-      plateNo: json['car_plate_number'],
+      id: json[ID],
+      plateNo: json[_PLATE_NO],
       carModel: CarModel.fromJson(json),
       customer: Customer.fromJson(json),
-      dateToService: json['car_date_to_service'],
-      dateFromService: json['car_date_from_service'],
-      distanceTargeted: json['car_distance_targeted'],
-      distanceCompleted: json['car_distance_completed'],
+      dateToService: DateUtils.toDateTime(json[_DATE_TO_SERVICE]),
+      dateFromService: DateUtils.toDateTime(json[_DATE_FROM_SERVICE]),
+      distanceTargeted: json[_DISTANCE_TARGETED],
+      distanceCompleted: json[_DISTANCE_COMPLETED],
     );
   }
 
   Map toJson() => {
-        'car_id': id,
-        'car_plate_number': plateNo,
-        'car_model_id': carModel.id,
-        'customer_id': customer.id,
-        'car_date_to_service': dateToService,
-        'car_date_from_service': dateFromService,
-        'car_distance_targeted': distanceTargeted,
-        'car_distance_completed': distanceCompleted,
+        ID: id,
+        _PLATE_NO: plateNo,
+        CarModel.ID: carModel.id,
+        Customer.ID: customer.id,
+        _DATE_TO_SERVICE: dateToService.toUtc().toIso8601String(),
+        _DATE_FROM_SERVICE: dateFromService.toUtc().toIso8601String(),
+        _DISTANCE_TARGETED: distanceTargeted,
+        _DISTANCE_COMPLETED: distanceCompleted,
       };
 }

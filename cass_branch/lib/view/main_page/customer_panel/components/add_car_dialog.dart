@@ -28,22 +28,22 @@ class _AddCarDialogState extends State<AddCarDialog> {
 
   void _fetchCarBrands() async {
     setState(() => _isLoading = true);
-    final carBrandsResponse = await CarAPI.fetchBrands();
+    final response = await CarAPI.fetchBrands();
     setState(() {
-      carBrandsResponse.isSuccess
-          ? _carBrands = carBrandsResponse.data
-          : DialogUtils.show(context, carBrandsResponse.message);
+      response.isSuccess
+          ? _carBrands = response.data
+          : DialogUtils.show(context, response.message);
       _isLoading = false;
     });
   }
 
   void _fetchCarModels() async {
     setState(() => _isLoading = true);
-    final carModelsResponse = await CarAPI.fetchModels();
+    final response = await CarAPI.fetchModels();
     setState(() {
-      carModelsResponse.isSuccess
-          ? _carModels = carModelsResponse.data
-          : DialogUtils.show(context, carModelsResponse.message);
+      response.isSuccess
+          ? _carModels = response.data
+          : DialogUtils.show(context, response.message);
       _isLoading = false;
     });
   }
@@ -69,12 +69,14 @@ class _AddCarDialogState extends State<AddCarDialog> {
     currentState.save();
     setState(() => _isLoading = true);
     final response = await CarAPI.add(
-      car: Car(
+      Car(
         plateNo: _plateNoController.text
             .toUpperCase()
             .replaceAll(new RegExp(r"\s+"), ""),
         carModel: _selectedModel,
         customer: widget._customer,
+        dateToService: DateTime.now(),
+        dateFromService: DateTime.now(),
       ),
     );
     if (response.isSuccess) _onDismiss();
@@ -99,7 +101,7 @@ class _AddCarDialogState extends State<AddCarDialog> {
         contentPadding: PADDING32,
         actionsPadding: PADDING24,
         title: DialogTitle('Add New Car'),
-        content: _AddCustomerDialogContent(
+        content: _AddCarDialogContent(
           formKey: _formKey,
           plateNoController: _plateNoController,
           carBrands: _carBrands,
@@ -118,7 +120,7 @@ class _AddCarDialogState extends State<AddCarDialog> {
   }
 }
 
-class _AddCustomerDialogContent extends StatelessWidget {
+class _AddCarDialogContent extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController plateNoController;
   final List<CarBrand> carBrands;
@@ -128,7 +130,7 @@ class _AddCustomerDialogContent extends StatelessWidget {
   final void Function(CarBrand carBrand) onBrandSelected;
   final void Function(CarModel carModel) onModelSelected;
 
-  _AddCustomerDialogContent({
+  _AddCarDialogContent({
     @required this.formKey,
     @required this.plateNoController,
     @required this.carBrands,

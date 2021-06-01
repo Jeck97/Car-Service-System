@@ -36,7 +36,7 @@ class CustomerDetailInformationPanel extends StatelessWidget {
               ),
               _infoText(
                 label: 'Registered On',
-                value: _customer.datetimeRegistered,
+                value: _customer.datetimeRegisteredString,
               ),
               _infoText(
                 label: 'Phone Number',

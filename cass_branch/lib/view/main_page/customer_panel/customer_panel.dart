@@ -4,12 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/customer_detail_page.dart';
 import 'components/customer_main_page.dart';
 
-class CustomerPanel extends StatefulWidget {
-  @override
-  _CustomerPanelState createState() => _CustomerPanelState();
-}
-
-class _CustomerPanelState extends State<CustomerPanel> {
+class CustomerPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Navigator(

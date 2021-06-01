@@ -1,4 +1,9 @@
 class Branch {
+  static const String ID = 'branch_id';
+  static const String _NAME = 'branch_name';
+  static const String _EMAIL = 'branch_email';
+  static const String _LOCATION = 'branch_location';
+
   int id;
   String name;
   String email;
@@ -9,16 +14,16 @@ class Branch {
 
   factory Branch.fromJson(Map<String, dynamic> json) {
     return Branch(
-        id: json['branch_id'],
-        name: json['branch_name'],
-        email: json['branch_email'],
-        location: json['branch_location']);
+        id: json[ID],
+        name: json[_NAME],
+        email: json[_EMAIL],
+        location: json[_LOCATION]);
   }
 
   Map toJson() => {
-        'branch_id': id,
-        'branch_name': name,
-        'branch_email': email,
-        'branch_location': location,
+        ID: id,
+        _NAME: name,
+        _EMAIL: email,
+        _LOCATION: location,
       };
 }

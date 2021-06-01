@@ -1,37 +1,60 @@
+import 'package:cass_branch/utils/date_utils.dart';
+
 class Customer {
+  static const _Type TYPE = _Type();
+  static const String ID = 'customer_id';
+  static const String _NAME = 'customer_name';
+  static const String _PHONE_NO = 'customer_phone_number';
+  static const String _EMAIL = 'customer_email';
+  static const String _PASSWORD = 'customer_password';
+  static const String _TYPE = 'customer_type';
+  static const String _DATETIME_REGISTERED = 'customer_datetime_registered';
+
   int id;
   String name;
   String phoneNo;
   String email;
+  String password;
   String type;
-  String datetimeRegistered;
+  DateTime datetimeRegistered;
 
   Customer({
     this.id,
     this.name,
     this.phoneNo,
     this.email,
+    this.password,
     this.type,
     this.datetimeRegistered,
   });
 
+  String get datetimeRegisteredString =>
+      DateUtils.fromDateTime(datetimeRegistered);
+
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
-      id: json['customer_id'],
-      name: json['customer_name'],
-      phoneNo: json['customer_phone_number'],
-      email: json['customer_email'],
-      type: json['customer_type'],
-      datetimeRegistered: json['customer_datetime_registered'],
+      id: json[ID],
+      name: json[_NAME],
+      phoneNo: json[_PHONE_NO],
+      email: json[_EMAIL],
+      type: json[_TYPE],
+      datetimeRegistered: DateUtils.toDateTime(json[_DATETIME_REGISTERED]),
     );
   }
 
   Map toJson() => {
-        'customer_id': id,
-        'customer_name': name,
-        'customer_phone_number': phoneNo,
-        'customer_email': email,
-        'customer_type': type,
-        'customer_datetime_registered': datetimeRegistered,
+        ID: id,
+        _NAME: name,
+        _PHONE_NO: phoneNo,
+        _EMAIL: email,
+        _PASSWORD: password,
+        _TYPE: type,
+        _DATETIME_REGISTERED: datetimeRegistered.toUtc().toIso8601String(),
       };
+}
+
+class _Type {
+  const _Type();
+  String get normalUser => 'Normal User';
+  String get appUser => 'App User';
 }

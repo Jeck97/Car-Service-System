@@ -36,26 +36,24 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: NavigationBar(
-                currentIndex: currentIndex,
-                onIndexUpdate: onIndexUpdate,
-              ),
+    return SafeArea(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: NavigationBar(
+              currentIndex: currentIndex,
+              onIndexUpdate: onIndexUpdate,
             ),
-            Expanded(
-              flex: 5,
-              child: IndexedStack(
-                index: currentIndex,
-                children: panels,
-              ),
+          ),
+          Expanded(
+            flex: 5,
+            child: IndexedStack(
+              index: currentIndex,
+              children: panels,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

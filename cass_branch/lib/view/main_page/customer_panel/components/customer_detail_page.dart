@@ -49,7 +49,7 @@ class CustomerDetailPage extends StatelessWidget {
     return <Widget>[
       IconButton(
         onPressed: () {},
-        tooltip: 'Make reservation',
+        tooltip: 'Make booking',
         icon: Icon(Icons.today_outlined),
       ),
       IconButton(

@@ -30,4 +30,24 @@ class BranchAPI {
       return Response(message: 'Login Branch: ' + SERVER_ERROR);
     }
   }
+
+  static Future<Response<List<Branch>>> fetch() async {
+    try {
+      final response = await http.get(
+        Uri.http(AUTHORITY, _unencodedPath),
+        headers: HEADERS,
+      );
+      final responseBody = jsonDecode(response.body);
+      return Response(
+        isSuccess: response.statusCode == 200,
+        message: responseBody[Response.MESSAGE],
+        data: List.from(responseBody[Response.DATA])
+            .map((json) => Branch.fromJson(json))
+            .toList(),
+      );
+    } catch (error) {
+      print(error);
+      return Response(message: 'Fetch Branches: ' + SERVER_ERROR);
+    }
+  }
 }
