@@ -3,7 +3,7 @@ const service = require("./service");
 
 module.exports = {
   read: (req, res) => {
-    service.selectCars(req.query.customer_id, (error, results) => {
+    service.selectCars(req.query.customer, (error, results) => {
       // Database got some problem
       if (error) {
         console.log(error);
@@ -60,7 +60,7 @@ module.exports = {
     });
   },
   create: (req, res) => {
-    service.insertCar(req.body, (error) => {
+    service.insertCar(req.body, (error, results) => {
       if (error) {
         // Database got some problem
         console.log(error);
@@ -82,7 +82,7 @@ module.exports = {
       // Car created successful
       return res.status(200).json({
         message: `Car ${req.body.car_plate_number} created successful`,
-        data: null,
+        data: results.insertId,
       });
     });
   },

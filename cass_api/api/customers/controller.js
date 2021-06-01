@@ -7,7 +7,7 @@ module.exports = {
     var { name, password } = req.body;
     if (password != null)
       req.body.password = hashSync(password, genSaltSync(10));
-    service.insertCustomer(req.body, (error) => {
+    service.insertCustomer(req.body, (error, results) => {
       if (error) {
         // Database got some problem
         console.log(error);
@@ -29,11 +29,11 @@ module.exports = {
       // Customer created successful
       return res.status(200).json({
         message: `Customer ${name} created successful`,
-        data: null,
+        data: results.insertId,
       });
     });
   },
-  readAll: (req, res) => {
+  read: (req, res) => {
     service.selectCustomers(req.query.search, (error, results) => {
       // Database got some problem
       if (error) {
