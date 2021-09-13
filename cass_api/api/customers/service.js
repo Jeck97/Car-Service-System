@@ -5,6 +5,12 @@ module.exports = {
     pool.query("INSERT INTO customer SET ?", data, (error, results) =>
       error ? callback(error) : callback(null, results)
     ),
+  selectCustomer: (email, callback) =>
+    pool.query(
+      "SELECT * FROM customer WHERE customer_email = ?",
+      [email],
+      (error, results) => (error ? callback(error) : callback(null, results[0]))
+    ),
   selectCustomers: (search, callback) =>
     search
       ? pool.query(

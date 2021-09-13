@@ -1,4 +1,5 @@
 import 'package:cass_branch/model/customer.dart';
+import 'package:cass_branch/view/main_page/booking_panel/add_booking_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'add_car_dialog.dart';
@@ -24,6 +25,11 @@ class CustomerDetailPage extends StatelessWidget {
               .copyWith(color: Colors.white),
         ),
         actions: _appBarActions(
+          onAddBooking: () => showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => AddBookingDialog(customer: _customer),
+          ),
           onAddCar: () => showDialog(
             context: context,
             barrierDismissible: false,
@@ -43,12 +49,13 @@ class CustomerDetailPage extends StatelessWidget {
   }
 
   List<Widget> _appBarActions({
+    @required void Function() onAddBooking,
     @required void Function() onAddCar,
     @required void Function() onRefresh,
   }) {
     return <Widget>[
       IconButton(
-        onPressed: () {},
+        onPressed: onAddBooking,
         tooltip: 'Make booking',
         icon: Icon(Icons.today_outlined),
       ),

@@ -19,6 +19,7 @@ class CarModel {
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return CarModel(
       id: json[ID],
       name: json[_NAME],

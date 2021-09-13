@@ -9,18 +9,18 @@ const List<IconData> _ICONS = [
   Icons.today,
   Icons.handyman,
   Icons.people,
-  Icons.payments,
-  Icons.analytics,
-  Icons.settings,
+  // Icons.payments,
+  // Icons.analytics,
+  // Icons.settings,
 ];
 const List<String> _TITLES = [
   'Dashboard',
   'Booking',
   'Service',
   'Customer',
-  'Payment',
-  'Report',
-  'Setting',
+  // 'Payment',
+  // 'Report',
+  // 'Setting',
 ];
 
 class NavigationBar extends StatelessWidget {
@@ -73,9 +73,9 @@ class _NavigationBarHeader extends StatelessWidget {
     return DrawerHeader(
       child: Center(
         child: Icon(
-          Icons.flutter_dash,
+          Icons.car_repair,
           color: Colors.white,
-          size: 60,
+          size: 100,
         ),
       ),
     );

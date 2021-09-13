@@ -1,8 +1,8 @@
 import 'package:cass_branch/model/customer.dart';
 import 'package:flutter/material.dart';
 
-import 'components/customer_detail_page.dart';
-import 'components/customer_main_page.dart';
+import 'customer_detail_page.dart';
+import 'customer_main_page.dart';
 
 class CustomerPanel extends StatelessWidget {
   @override

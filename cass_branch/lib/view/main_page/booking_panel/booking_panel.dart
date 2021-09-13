@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'components/booking_main_page.dart';
+import 'booking_main_page.dart';
 
 class BookingPanel extends StatelessWidget {
   @override

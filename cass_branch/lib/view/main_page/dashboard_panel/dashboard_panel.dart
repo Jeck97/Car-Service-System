@@ -1,39 +1,27 @@
 import 'package:flutter/material.dart';
 
-class DashboardPanel extends StatefulWidget {
-  @override
-  _DashboardPanelState createState() => _DashboardPanelState();
-}
+import 'dashboard_aside.dart';
+import 'dashboard_content.dart';
 
-class _DashboardPanelState extends State<DashboardPanel> {
+class DashboardPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      onGenerateRoute: (settings) => MaterialPageRoute(
-        builder: (context) => settings.name == 'r2'
-            ? Scaffold(
-                appBar: AppBar(
-                  title: GestureDetector(
-                    child: Text('Route 2'),
-                    onTap: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              )
-            : Scaffold(
-                appBar: AppBar(
-                  title: Text('Route 1'),
-                ),
-                body: Scaffold(
-                  appBar: AppBar(
-                    title: GestureDetector(
-                      child: Text('Dashboard'),
-                      onTap: () {
-                        Navigator.of(context).pushNamed('r2');
-                      },
-                    ),
-                  ),
-                ),
-              ),
+    return Scaffold(
+      backgroundColor: Colors.blueGrey.shade100,
+      appBar: AppBar(
+        title: Text(
+          'Dashboard',
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              .copyWith(color: Colors.white),
+        ),
+      ),
+      body: Row(
+        children: <Widget>[
+          DashboardContent(),
+          DashboardAside(),
+        ],
       ),
     );
   }

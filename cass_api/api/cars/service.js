@@ -1,10 +1,10 @@
 const pool = require("../../config/database");
 
 module.exports = {
-  selectCars: (carId, callback) =>
+  selectCars: (customerId, callback) =>
     pool.query(
       "SELECT * FROM car NATURAL JOIN car_model NATURAL JOIN car_brand WHERE customer_id = ?",
-      [carId],
+      [customerId],
       (error, results) => (error ? callback(error) : callback(null, results))
     ),
   selectCarModels: (callback) =>

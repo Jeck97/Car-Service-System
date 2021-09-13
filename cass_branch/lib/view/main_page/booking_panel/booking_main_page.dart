@@ -1,3 +1,5 @@
+// CaSS Branch – booking_main_page.dart
+
 import 'package:cass_branch/api/reservation_api.dart';
 import 'package:cass_branch/model/branch.dart';
 import 'package:cass_branch/model/reservation.dart';
@@ -28,7 +30,7 @@ class _BookingMainPageState extends State<BookingMainPage> {
   bool _isCancelledChecked;
   DateTime _selectedDate;
 
-  void _fetchReservation() async {
+  void _fetchReservations() async {
     setState(() => _isLoading = true);
     final response = await ReservationAPI.fetch(
       id: Branch.instance.id,
@@ -37,14 +39,14 @@ class _BookingMainPageState extends State<BookingMainPage> {
     setState(() {
       if (response.isSuccess) {
         _reservations = response.data;
-        _filterReservation();
+        _filterReservations();
       } else
         DialogUtils.show(context, response.message);
       _isLoading = false;
     });
   }
 
-  void _filterReservation() {
+  void _filterReservations() {
     _filteredReservations = (_isReservedChecked &&
             _isServicingChecked &&
             _isServicedChecked &&
@@ -76,7 +78,7 @@ class _BookingMainPageState extends State<BookingMainPage> {
       _isServicingChecked = servicing;
       _isServicedChecked = serviced;
       _isCancelledChecked = cancelled;
-      _filterReservation();
+      _filterReservations();
     });
   }
 
@@ -88,7 +90,7 @@ class _BookingMainPageState extends State<BookingMainPage> {
     _isServicingChecked = true;
     _isServicedChecked = true;
     _isCancelledChecked = true;
-    _fetchReservation();
+    _fetchReservations();
     super.initState();
   }
 
@@ -125,7 +127,7 @@ class _BookingMainPageState extends State<BookingMainPage> {
             IconButton(
               icon: Icon(Icons.refresh),
               tooltip: 'Refresh',
-              onPressed: _fetchReservation,
+              onPressed: _fetchReservations,
             ),
           ],
         ),

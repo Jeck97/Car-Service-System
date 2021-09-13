@@ -11,8 +11,8 @@ import 'package:cass_branch/model/service.dart';
 import 'package:cass_branch/utils/constants.dart';
 import 'package:cass_branch/utils/date_utils.dart' as cass;
 import 'package:cass_branch/utils/dialog_utils.dart';
-import 'package:cass_branch/view/main_page/customer_panel/components/add_car_dialog.dart';
-import 'package:cass_branch/view/main_page/customer_panel/components/add_customer_dialog.dart';
+import 'package:cass_branch/view/main_page/customer_panel/add_car_dialog.dart';
+import 'package:cass_branch/view/main_page/customer_panel/add_customer_dialog.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -78,7 +78,7 @@ class _AddBookingDialogState extends State<AddBookingDialog> {
 
   void _fetchServices() async {
     setState(() => _isLoading = true);
-    final response = await ServiceAPI.fetchByBranch(Branch.instance);
+    final response = await ServiceAPI.fetch(Branch.instance);
     setState(() {
       response.isSuccess
           ? _services = response.data
@@ -525,7 +525,7 @@ class _AddBookingDialogState extends State<AddBookingDialog> {
             _labeledText(
               'Name',
               DropdownSearch<Service>(
-                mode: Mode.MENU,
+                mode: Mode.DIALOG,
                 showSearchBox: true,
                 hint: '-- Select --',
                 selectedItem: _selectedService,

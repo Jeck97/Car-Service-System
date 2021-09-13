@@ -13,6 +13,7 @@ class Branch {
   Branch({this.id, this.name, this.email, this.location});
 
   factory Branch.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Branch(
         id: json[ID],
         name: json[_NAME],

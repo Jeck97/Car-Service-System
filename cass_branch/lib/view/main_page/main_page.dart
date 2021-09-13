@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'booking_panel/booking_panel.dart';
-import 'dashboard_panel/dashboard_panel.dart';
 import 'customer_panel/customer_panel.dart';
+import 'dashboard_panel/dashboard_panel.dart';
 import 'navigation_bar.dart';
-import 'payment_panel/payment_panel.dart';
-import 'report_panel/report_panel.dart';
 import 'service_panel/service_panel.dart';
-import 'setting_panel/setting_panel.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -27,10 +24,10 @@ class _MainPageState extends State<MainPage> {
       ..add(DashboardPanel())
       ..add(BookingPanel())
       ..add(ServicePanel())
-      ..add(CustomerPanel())
-      ..add(PaymentPanel())
-      ..add(ReportPanel())
-      ..add(SettingPanel());
+      ..add(CustomerPanel());
+    // ..add(PaymentPanel())
+    // ..add(ReportPanel())
+    // ..add(SettingPanel());
     super.initState();
   }
 

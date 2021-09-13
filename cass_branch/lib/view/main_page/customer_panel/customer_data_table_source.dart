@@ -22,7 +22,7 @@ class CustomerDataTableSource extends DataTableSource {
         DataCell(Text(customer.phoneNo)),
         DataCell(Text(customer.email != null ? customer.email : '-')),
         DataCell(
-          customer.type == 'app user'
+          customer.type == Customer.TYPE.appUser
               ? Icon(Icons.check, color: Colors.green)
               : Icon(Icons.close, color: Colors.red),
         ),

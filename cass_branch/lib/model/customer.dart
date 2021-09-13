@@ -32,6 +32,7 @@ class Customer {
       DateUtils.fromDateTime(datetimeRegistered);
 
   factory Customer.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Customer(
       id: json[ID],
       name: json[_NAME],
@@ -49,7 +50,7 @@ class Customer {
         _EMAIL: email,
         _PASSWORD: password,
         _TYPE: type,
-        _DATETIME_REGISTERED: datetimeRegistered.toUtc().toIso8601String(),
+        _DATETIME_REGISTERED: datetimeRegistered.toIso8601String(),
       };
 }
 

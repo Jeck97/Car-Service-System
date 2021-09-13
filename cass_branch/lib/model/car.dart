@@ -35,6 +35,7 @@ class Car {
   String get dateFromServiceString => DateUtils.fromDate(dateFromService);
 
   factory Car.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Car(
       id: json[ID],
       plateNo: json[_PLATE_NO],
@@ -52,8 +53,8 @@ class Car {
         _PLATE_NO: plateNo,
         CarModel.ID: carModel.id,
         Customer.ID: customer.id,
-        _DATE_TO_SERVICE: dateToService.toUtc().toIso8601String(),
-        _DATE_FROM_SERVICE: dateFromService.toUtc().toIso8601String(),
+        _DATE_TO_SERVICE: dateToService.toIso8601String(),
+        _DATE_FROM_SERVICE: dateFromService.toIso8601String(),
         _DISTANCE_TARGETED: distanceTargeted,
         _DISTANCE_COMPLETED: distanceCompleted,
       };

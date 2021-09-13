@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cass_branch/model/servicing.dart';
 import 'package:cass_branch/utils/date_utils.dart';
 
 import 'branch.dart';
@@ -23,6 +24,7 @@ class Reservation {
   Car car;
   Service service;
   Branch branch;
+  Servicing servicing;
 
   Reservation({
     this.id,
@@ -33,6 +35,7 @@ class Reservation {
     this.car,
     this.service,
     this.branch,
+    this.servicing,
   });
 
   String get dateTimeReservedString => DateUtils.fromDateTime(datetimeReserved);
@@ -44,6 +47,7 @@ class Reservation {
       datetimeToService.add(Duration(minutes: service.duration)));
 
   factory Reservation.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return Reservation(
       id: json[ID],
       datetimeReserved: DateUtils.toDateTime(json[_DATETIME_RESERVED]),
@@ -53,13 +57,14 @@ class Reservation {
       car: Car.fromJson(json),
       service: Service.fromJson(json),
       branch: Branch.fromJson(json),
+      servicing: Servicing.fromJson(json),
     );
   }
 
   Map toJson() => {
         ID: id,
-        _DATETIME_RESERVED: datetimeReserved.toUtc().toIso8601String(),
-        _DATETIME_TO_SERVICE: datetimeToService.toUtc().toIso8601String(),
+        _DATETIME_RESERVED: datetimeReserved.toIso8601String(),
+        _DATETIME_TO_SERVICE: datetimeToService.toIso8601String(),
         _STATUS: status,
         _REMARK: remark,
         Car.ID: car.id,
@@ -76,6 +81,7 @@ class Reservation {
     Car car,
     Service service,
     Branch branch,
+    Servicing servicing,
   }) =>
       Reservation(
         id: id ?? this.id,
@@ -86,6 +92,7 @@ class Reservation {
         car: car ?? this.car,
         service: service ?? this.service,
         branch: branch ?? this.branch,
+        servicing: servicing ?? this.servicing,
       );
 }
 

@@ -1,12 +1,55 @@
-const { ECONNREFUSED, DB_CONN_ERR, ER_DUP_ENTRY } = require("../../const");
+const {
+  ECONNREFUSED,
+  DB_CONN_ERR,
+  ER_DUP_ENTRY,
+  LOGIN_INVALID,
+  LOGIN_SUCCESS,
+} = require("../../const");
 const service = require("./service");
-const { genSaltSync, hashSync } = require("bcrypt");
+const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 
 module.exports = {
+  login: (req, res) => {
+    const email = req.body.customer_email;
+    const password = req.body.customer_password;
+    service.selectCustomer(email, (error, result) => {
+      // Database got some problem
+      if (error) {
+        console.log(error);
+        return res.status(500).json({
+          message: DB_CONN_ERR,
+          data: null,
+        });
+      }
+      // If the email not found in db
+      if (!result) {
+        return res.status(401).json({
+          message: LOGIN_INVALID,
+          data: null,
+        });
+      }
+      const isMatched = result.customer_password
+        ? compareSync(password, result.customer_password)
+        : false;
+      // If the password not matched with the corresponding email
+      if (!isMatched) {
+        return res.status(401).json({
+          message: LOGIN_INVALID,
+          data: null,
+        });
+      }
+      // Email found and the corresponding password matched
+      result.customer_password = undefined;
+      return res.status(200).json({
+        message: LOGIN_SUCCESS,
+        data: result,
+      });
+    });
+  },
   create: (req, res) => {
-    var { name, password } = req.body;
-    if (password != null)
-      req.body.password = hashSync(password, genSaltSync(10));
+    var { customer_name, customer_password } = req.body;
+    if (customer_password != null)
+      req.body.customer_password = hashSync(customer_password, genSaltSync(10));
     service.insertCustomer(req.body, (error, results) => {
       if (error) {
         // Database got some problem
@@ -28,7 +71,7 @@ module.exports = {
       }
       // Customer created successful
       return res.status(200).json({
-        message: `Customer ${name} created successful`,
+        message: `Customer ${customer_name} registered successful`,
         data: results.insertId,
       });
     });
